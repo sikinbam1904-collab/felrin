@@ -5,22 +5,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="Cache-Control" content="no-store">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>𝙈𝙮 𝙡𝙖𝙣𝙙 ♡</title>
+    <title>𝒇elrin ♡</title>
     <!-- Social Preview: ค่าเริ่มต้นจะถูกอัปเดตจาก site_config/main เมื่อหน้าเว็บโหลด -->
     <meta name="description" id="metaDescription" content="ยินดีต้อนรับสู่เว็บไซต์ของร้านค่ะ ♡">
-    <meta property="og:title" id="ogTitle" content="𝙈𝙮 𝙡𝙖𝙣𝙙 ♡">
-    <meta property="og:description" id="ogDescription" content="ยินดีต้อนรับสู่เว็บไซต์ของร้านค่ะ ♡">
+    <meta property="og:title" id="ogTitle" content="𝒇elrin ♡">
+    <meta property="og:description" id="ogDescription" content="𐄙ּ♡༷𓈒̶֯♩ྀི We are delighted to have you 𓈒ׅ֯𓋰ּྀི༷♡˖ཾ𓈒">
     <meta property="og:image" id="ogImage" content="">
     <meta property="og:type" content="website">
     <meta property="og:url" id="ogUrl" content="">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" id="twitterTitle" content="𝙈𝙮 𝙡𝙖𝙣𝙙 ♡">
-    <meta name="twitter:description" id="twitterDescription" content="ยินดีต้อนรับสู่เว็บไซต์ของร้านค่ะ ♡">
+    <meta name="twitter:title" id="twitterTitle" content="𝒇elrin ♡">
+    <meta name="twitter:description" id="twitterDescription" content="𐄙ּ♡༷𓈒̶֯♩ྀི We are delighted to have you 𓈒ׅ֯𓋰ּྀི༷♡˖ཾ𓈒">
     <meta name="twitter:image" id="twitterImage" content="">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
     
     <!-- Firebase Compat Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -1780,7 +1781,7 @@
 
             <!-- Status Bar -->
             <div class="status-bar">
-                <span id="clock"><i class="fas fa-heart text-[#D870B8] mr-1.5 text-xs"></i>12:00</span>
+                <span id="clock"><span data-clock-icon-slot aria-hidden="true" style="display:inline-block;width:0;height:0;visibility:hidden;vertical-align:middle"></span><span data-clock-time="true">12:00</span></span>
                 <div class="status-actions flex gap-2 items-center text-xs">
                     <button class="mini-music-btn" id="miniMusicBtn" onclick="togglePlay()" title="เปิด/ปิด เพลงบรรยากาศ">
                         <i class="fas fa-music text-[11px]" id="miniMusicIcon"></i>
@@ -2940,6 +2941,7 @@
         const detailTitle = document.getElementById('detailTitle');
         const listContainer = document.getElementById('listContainer');
         const clockElement = document.getElementById('clock');
+        let clockConfigReady = false;
         const miniMusicBtn = document.getElementById('miniMusicBtn');
         const miniMusicIcon = document.getElementById('miniMusicIcon');
         const toastAlert = document.getElementById('toastAlert');
@@ -3132,9 +3134,8 @@
         }
         function parseParticleEmojis(text){const parts=String(text||'').split(/[\s,]+/).map(x=>x.trim()).filter(Boolean);return parts.length?parts.slice(0,30):['✨'];}
         function restartParticleTimer(){if(particleTimer)clearInterval(particleTimer);particleTimer=null;const cfg=customization().particles;if(cfg.enabled===false)return;particleTimer=setInterval(spawnParticle,Math.min(10000,Math.max(350,Number(cfg.intervalMs)||1200)));}
-        function applyCustomizationToUI(){const cfg=customization();const loadingColors={background:/^#[0-9a-f]{6}$/i.test(cfg.loadingColors?.background||'')?cfg.loadingColors.background:'#FFFFFF',text:/^#[0-9a-f]{6}$/i.test(cfg.loadingColors?.text||'')?cfg.loadingColors.text:'#171717',accent:/^#[0-9a-f]{6}$/i.test(cfg.loadingColors?.accent||'')?cfg.loadingColors.accent:'#111111'};const loadingScreen=document.getElementById('dataLoadingScreen');if(loadingScreen){loadingScreen.style.setProperty('--loading-bg',loadingColors.background);loadingScreen.style.setProperty('--loading-text',loadingColors.text);loadingScreen.style.setProperty('--loading-accent',loadingColors.accent);}const clockGlyph=document.querySelector('#clock i');
-            if(clockGlyph){const clockText=String(cfg.clockIconText||'fas fa-heart').trim();const faClass=normalizeClockFaClass(clockText);if(faClass){clockGlyph.className=faClass;}else{clockGlyph.className='custom-clock-glyph';clockGlyph.textContent=clockText;}}
-            const iconMap=[['music','#miniMusicBtn i'],['order','.status-bar button[onclick="openOrderLookup()"] i'],['cart','.status-bar button[onclick="openCart()"] i'],['add','#shopAddButton i'],['clock','#clock i']];iconMap.forEach(([key,selector])=>{const el=document.querySelector(selector),url=normalizeDisplayImageUrl(cfg.header.iconUrls?.[key]);if(!el)return;const size=Math.min(64,Math.max(10,Number(cfg.header.iconSizes?.[key])||10));el.style.fontSize=size+'px';const old=el.parentElement?.querySelector('img[data-custom-header-icon="'+key+'"]');if(url){if(old){old.src=url;old.style.width=size+'px';old.style.height=size+'px';}else{const img=document.createElement('img');img.dataset.customHeaderIcon=key;img.src=url;img.alt='';img.style.cssText=`width:${size}px;height:${size}px;max-width:none;object-fit:contain;vertical-align:middle`;img.onerror=()=>{img.remove();el.style.display='';};el.style.display='none';el.parentElement.insertBefore(img,el);} }else{if(old)old.remove();el.style.display='';}});document.title=cfg.browserTitle||defaultConfig.customization.browserTitle;const t=document.getElementById('dataLoadingTitle');if(t)t.textContent=cfg.loadingTitle||'';const lt=document.getElementById('dataLoadingText');if(lt&&!dataLoadingFinished)lt.textContent=cfg.loadingText||'';const url=String(cfg.music.url||'').trim();if(bgMusic&&bgMusic.dataset.customUrl!==url){bgMusic.dataset.customUrl=url;bgMusic.src=url;bgMusic.load();}if(bgMusic){bgMusic.loop=cfg.music.loop!==false;bgMusic.volume=Math.min(1,Math.max(0,Number(cfg.music.volume??.65)));}const mb=document.getElementById('miniMusicBtn');if(mb)mb.style.display=cfg.music.enabled===false||cfg.header.showMusicButton===false?'none':'';const clock=document.getElementById('clock');if(clock)clock.style.display=cfg.header.showClock===false?'none':'';const ob=document.querySelector('.status-bar button[onclick="openOrderLookup()"]');if(ob)ob.style.display=cfg.header.showOrderButton===false?'none':'';const cb=document.querySelector('.status-bar button[onclick="openCart()"]');if(cb)cb.style.display=cfg.header.showCartButton===false?'none':'';const bottomBar=document.getElementById('shopBottomBar');if(bottomBar){const hidden=cfg.header.showBottomBar===false;bottomBar.style.display=hidden?'none':'';bottomBar.classList.toggle('shop-bottom-bar-hidden',hidden);}[['cartModalTitle','cartTitle'],['checkoutModalTitle','checkoutTitle'],['createOrderButton','createOrderButton'],['orderLookupTitle','lookupTitle'],['lookupGuestOrderButton','lookupButton']].forEach(([id,key])=>{const el=document.getElementById(id);if(el)el.textContent=cfg.ui[key]||'';});applyCustomCursor(cfg.cursorPng||'');restartParticleTimer();renderHomeCover();}
+        function applyCustomizationToUI(){const cfg=customization();const loadingColors={background:/^#[0-9a-f]{6}$/i.test(cfg.loadingColors?.background||'')?cfg.loadingColors.background:'#FFFFFF',text:/^#[0-9a-f]{6}$/i.test(cfg.loadingColors?.text||'')?cfg.loadingColors.text:'#171717',accent:/^#[0-9a-f]{6}$/i.test(cfg.loadingColors?.accent||'')?cfg.loadingColors.accent:'#111111'};const loadingScreen=document.getElementById('dataLoadingScreen');if(loadingScreen){loadingScreen.style.setProperty('--loading-bg',loadingColors.background);loadingScreen.style.setProperty('--loading-text',loadingColors.text);loadingScreen.style.setProperty('--loading-accent',loadingColors.accent);}
+            const iconMap=[['music','#miniMusicBtn i'],['order','.status-bar button[onclick="openOrderLookup()"] i'],['cart','.status-bar button[onclick="openCart()"] i'],['add','#shopAddButton i']];iconMap.forEach(([key,selector])=>{const el=document.querySelector(selector),url=normalizeDisplayImageUrl(cfg.header.iconUrls?.[key]);if(!el)return;const size=Math.min(64,Math.max(10,Number(cfg.header.iconSizes?.[key])||10));el.style.fontSize=size+'px';const old=el.parentElement?.querySelector('img[data-custom-header-icon="'+key+'"]');if(url){if(old){old.src=url;old.style.width=size+'px';old.style.height=size+'px';}else{const img=document.createElement('img');img.dataset.customHeaderIcon=key;img.src=url;img.alt='';img.style.cssText=`width:${size}px;height:${size}px;max-width:none;object-fit:contain;vertical-align:middle`;img.onerror=()=>{img.remove();el.style.display='';};el.style.display='none';el.parentElement.insertBefore(img,el);} }else{if(old)old.remove();el.style.display='';}});clockConfigReady=true;updateClock();document.title=cfg.browserTitle||defaultConfig.customization.browserTitle;const t=document.getElementById('dataLoadingTitle');if(t)t.textContent=cfg.loadingTitle||'';const lt=document.getElementById('dataLoadingText');if(lt&&!dataLoadingFinished)lt.textContent=cfg.loadingText||'';const url=String(cfg.music.url||'').trim();if(bgMusic&&bgMusic.dataset.customUrl!==url){bgMusic.dataset.customUrl=url;bgMusic.src=url;bgMusic.load();}if(bgMusic){bgMusic.loop=cfg.music.loop!==false;bgMusic.volume=Math.min(1,Math.max(0,Number(cfg.music.volume??.65)));}const mb=document.getElementById('miniMusicBtn');if(mb)mb.style.display=cfg.music.enabled===false||cfg.header.showMusicButton===false?'none':'';const clock=document.getElementById('clock');if(clock)clock.style.display=cfg.header.showClock===false?'none':'';const ob=document.querySelector('.status-bar button[onclick="openOrderLookup()"]');if(ob)ob.style.display=cfg.header.showOrderButton===false?'none':'';const cb=document.querySelector('.status-bar button[onclick="openCart()"]');if(cb)cb.style.display=cfg.header.showCartButton===false?'none':'';const bottomBar=document.getElementById('shopBottomBar');if(bottomBar){const hidden=cfg.header.showBottomBar===false;bottomBar.style.display=hidden?'none':'';bottomBar.classList.toggle('shop-bottom-bar-hidden',hidden);}[['cartModalTitle','cartTitle'],['checkoutModalTitle','checkoutTitle'],['createOrderButton','createOrderButton'],['orderLookupTitle','lookupTitle'],['lookupGuestOrderButton','lookupButton']].forEach(([id,key])=>{const el=document.getElementById(id);if(el)el.textContent=cfg.ui[key]||'';});applyCustomCursor(cfg.cursorPng||'');restartParticleTimer();renderHomeCover();}
         function renderCustomizationEditor(){
             const cfg=customization(),g=id=>document.getElementById(id);
             g('admBrowserTitle').value=cfg.browserTitle||'';g('admLoadingTitle').value=cfg.loadingTitle||'';g('admLoadingText').value=cfg.loadingText||'';g('admLoadingBgColor').value=cfg.loadingColors?.background||'#FFFFFF';g('admLoadingTextColor').value=cfg.loadingColors?.text||'#171717';g('admLoadingAccentColor').value=cfg.loadingColors?.accent||'#111111';
@@ -5858,18 +5859,57 @@
 
         function updateClock() {
             const now = new Date();
-            let hours = now.getHours();
-            let minutes = now.getMinutes();
-            hours = hours < 10 ? '0' + hours : hours;
-            minutes = minutes < 10 ? '0' + minutes : minutes;
-            const clockCfg=customization();
-            const iconUrl=String(clockCfg.headerIconUrl||'').trim();
-            const clockIconSize=Math.min(64,Math.max(8,Number(clockCfg.header?.iconSizes?.clock)||18));
-            const clockText=String(clockCfg.clockIconText||'fas fa-heart').trim();
-            const faClass=normalizeClockFaClass(clockText);
-            const iconMarkup=faClass?`<i class="${faClass}" aria-hidden="true" style="font-size:${clockIconSize}px;vertical-align:middle;margin-right:6px"></i>`:`<span style="font-size:${clockIconSize}px;line-height:1;vertical-align:middle;margin-right:6px">${clockText.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</span>`;
-            if(iconUrl){clockElement.innerHTML=`<img src="${iconUrl.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" alt="" style="width:${clockIconSize}px;height:${clockIconSize}px;object-fit:contain;vertical-align:middle;margin-right:6px;display:inline-block" onerror="this.remove()">${hours}:${minutes}`;}
-            else clockElement.innerHTML = `${iconMarkup}${hours}:${minutes}`;
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const timeNode = clockElement?.querySelector('[data-clock-time]');
+            if (timeNode) timeNode.textContent = `${hours}:${minutes}`;
+            // ยังไม่แสดงไอคอนสำรองจนกว่าจะอ่านค่าจากฐานข้อมูลเสร็จ
+            if (!clockConfigReady || !clockElement) return;
+
+            const cfg = customization();
+            const iconUrl = normalizeDisplayImageUrl(cfg.headerIconUrl || cfg.header?.iconUrls?.clock || '');
+            const size = Math.min(64, Math.max(8, Number(cfg.header?.iconSizes?.clock) || 18));
+            const iconText = String(cfg.clockIconText || '♡').trim() || '♡';
+            const signature = [iconUrl, iconText, size].join('|');
+            if (clockElement.dataset.iconSignature === signature) return;
+
+            let slot = clockElement.querySelector('[data-clock-icon-slot]');
+            if (!slot) {
+                slot = document.createElement('span');
+                slot.dataset.clockIconSlot = 'true';
+                slot.setAttribute('aria-hidden', 'true');
+                clockElement.insertBefore(slot, timeNode || null);
+            }
+            slot.replaceChildren();
+            slot.style.cssText = `display:inline-block;width:${size}px;height:${size}px;line-height:1;vertical-align:middle;margin-right:6px;visibility:hidden`;
+            clockElement.dataset.iconSignature = signature;
+
+            const showFallback = () => {
+                if (clockElement.dataset.iconSignature !== signature) return;
+                const faClass = normalizeClockFaClass(iconText);
+                const node = document.createElement(faClass ? 'i' : 'span');
+                if (faClass) node.className = faClass;
+                else { node.className = 'custom-clock-glyph'; node.textContent = iconText; }
+                node.style.cssText = `font-size:${size}px;line-height:1;vertical-align:middle;display:inline-block`;
+                slot.replaceChildren(node);
+                slot.style.width = 'auto';
+                slot.style.height = 'auto';
+                slot.style.visibility = 'visible';
+            };
+
+            if (!iconUrl) { showFallback(); return; }
+            const image = new Image();
+            image.alt = '';
+            image.decoding = 'async';
+            image.onload = () => {
+                if (clockElement.dataset.iconSignature !== signature) return;
+                image.style.cssText = `width:${size}px;height:${size}px;max-width:none;object-fit:contain;display:block`;
+                slot.replaceChildren(image);
+                slot.style.visibility = 'visible';
+            };
+            image.onerror = showFallback;
+            image.src = iconUrl;
+            // กรณีรูปอยู่ใน cache แล้ว onload อาจเกิดเร็วมาก แต่ยังคงไม่แสดง placeholder
         }
 
         // [EDIT 06] หากทำหลายร้านบนโดเมนเดียวกัน ให้เปลี่ยน prefix ของ CART_KEY / LAST_ORDER_KEY
